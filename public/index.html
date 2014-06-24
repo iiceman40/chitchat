@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ChitChat</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<script src="socket.io/socket.io.js"></script>
+	<script src="js/Vendor/jquery.min.js"></script>
+	<script src="js/Vendor/bootstrap.min.js"></script>
+	<script src="js/Vendor/knockout.js"></script>
+	<script src="js/Model/Message.js"></script>
+	<script src="js/Model/Member.js"></script>
+	<script src="js/Controller/client.js"></script>
+</head>
+<body>
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<i class="fa fa-user" style="font-size: 120%"></i>
+					<i class="fa fa-comment" style="vertical-align: top; font-size: 90%; display: inline-block; margin: -2% 0 0 -2%;"></i>
+					ChitChat - A sample chat application.
+				</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<span class="navbar-text" data-bind="visible: name, text: name"></span>
+					<a href="#" data-bind="visible: !name()">Login</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-sm-10">
+			<div id="chat" class="list-unstyled" data-bind="foreach: messages">
+				<div class="col-sm-3">
+					<em data-bind="text: timeFormated" class="half-transparent"></em>
+					<em data-bind="text: name" class="half-transparent"></em>
+					<em data-bind="visible: name" class="half-transparent">sagt:</em>
+					<em data-bind="if: type() == 'private'" class="half-transparent">
+						[PM an <span data-bind="text: targets"></span>]
+					</em>
+				</div>
+				<div class="col-sm-9">
+					<em data-bind="if: !name()" class="half-transparent">
+						<span data-bind="html: text"></span>
+					</em>
+					<span data-bind="if: name">
+						<span data-bind="html: text"></span>
+					</span>
+					<div data-bind="if: image">
+						<span data-bind="html: image"></span>
+					</div>
+				</div>
+			</div>
+			<div data-bind="visible: receiving" style="text-align: center" class="half-transparent"><i class="fa fa-spinner fa-spin half-transparent"></i></div>
+		</div>
+		<div class="col-sm-2">
+			<div id="members-panel" class="panel panel-default affix pull-right" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+				<div class="panel-heading">Teilnehmer </div>
+				<div class="panel-body" data-container="#members-panel" data-trigger="manual" data-toggle="popover" data-placement="bottom" data-content="Hier findest du eine Liste aller Chat-Teilnehmer. Klicke einen oder mehere Personen an, um ihnen private Nachrichten zu schicken." data-original-title="Hinweis">
+					<div id="members" class="btn-group-vertical btn-block" data-bind="foreach: members">
+						<button class="btn btn-primary" data-bind="click: $root.toggleMember">
+							<i class="fa fa-user" data-bind="visible: isMe"></i>
+							<i class="fa fa-comment" data-bind="visible: selected"></i>
+							<i class="fa fa-comment-o" data-bind="visible: !selected() && !isMe()"></i>
+							<span data-bind="text: name"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<footer>
+	<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+		<div class="container">
+			<div class="row">
+				<form>
+					<div class="col-sm-2">
+						<input id="name" type="text" class="form-control" placeholder="dein Name" data-bind="value: name" />
+					</div>
+					<div class="col-sm-7">
+						<input id="text" type="text" class="form-control" placeholder="schreibe etwas..." data-bind="value: message" />
+					</div>
+					<div class="col-sm-2">
+						<input type="file" id="files" name="files[]" multiple style="display:none" />
+						<a class="btn btn-primary" data-bind="click: addImage">
+							<span data-bind="text: imageLabel"></span>
+						</a>
+					</div>
+					<div class="col-sm-1">
+						<button class="btn btn-default" data-bind="click: send" >
+							<span class="glyphicon glyphicon-send half-transparent" data-bind="visible: !sending()"></span>
+							<span class="fa fa-spinner fa-spinfa fa-spinner fa-spin half-transparent" data-bind="visible: sending"></span>
+							Senden
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+</footer>
+
+</body>
+</html>
