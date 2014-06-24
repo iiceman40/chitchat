@@ -7,7 +7,7 @@ var express = require('express'),
 
 // Webserver
 // auf den Port x schalten
-server.listen(conf.port);
+server.listen(process.env.PORT);
 
 app.configure(function(){
 	// statische Dateien ausliefern
