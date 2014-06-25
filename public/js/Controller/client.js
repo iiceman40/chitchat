@@ -83,7 +83,7 @@ $(document).ready(function(){
 				self.message('');
 				self.image('');
 				self.sending(true);
-				console.log('client sending message - sending: ', self.sending());
+				console.log('client sending message - sending: ', self.sending(), new Date());
 			}
 		}
 
@@ -118,7 +118,7 @@ $(document).ready(function(){
 			// always scroll down to show the latest message
 			$('body').scrollTop($('body')[0].scrollHeight);
 			self.receiving(false);
-			console.log('client message recieved - receiving: ', self.receiving());
+			console.log('client message recieved - receiving: ', self.receiving(), new Date());
 		});
 		// Received ID
 		socket.on('myId', function(data){
@@ -130,12 +130,12 @@ $(document).ready(function(){
 		// Server received message
 		socket.on('received', function(data){
 			self.sending(false);
-			console.log("server message recieved - sending: ", self.sending());
+			console.log("server message recieved - sending: ", self.sending(), new Date());
 		});
 		// Server is sending a message
 		socket.on('sending', function(data){
 			self.receiving(true);
-			console.log("incoming message from server - receiving: ", self.receiving());
+			console.log("incoming message from server - receiving: ", self.receiving(), new Date());
 		});
 
 		// File Handler

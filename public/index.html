@@ -47,23 +47,25 @@
 	<div class="row">
 		<div class="col-sm-10">
 			<div id="chat" class="list-unstyled" data-bind="foreach: messages">
-				<div class="col-sm-3">
-					<em data-bind="text: timeFormated" class="half-transparent"></em>
-					<em data-bind="text: name" class="half-transparent"></em>
-					<em data-bind="visible: name" class="half-transparent">sagt:</em>
-					<em data-bind="if: type() == 'private'" class="half-transparent">
-						[PM an <span data-bind="text: targets"></span>]
-					</em>
-				</div>
-				<div class="col-sm-9">
-					<em data-bind="if: !name()" class="half-transparent">
-						<span data-bind="html: text"></span>
-					</em>
-					<span data-bind="if: name">
-						<span data-bind="html: text"></span>
-					</span>
-					<div data-bind="if: image">
-						<span data-bind="html: image"></span>
+				<div class="row">
+					<div class="col-sm-3">
+						<em data-bind="text: timeFormated" class="half-transparent"></em>
+						<em data-bind="text: name" class="half-transparent"></em>
+						<em data-bind="visible: name" class="half-transparent">sagt:</em>
+						<em data-bind="if: type() == 'private'" class="half-transparent">
+							[PM an <span data-bind="text: targets"></span>]
+						</em>
+					</div>
+					<div class="col-sm-9">
+						<em data-bind="if: !name()" class="half-transparent">
+							<span data-bind="html: text"></span>
+						</em>
+						<span data-bind="if: name">
+							<span data-bind="html: text"></span>
+						</span>
+						<div data-bind="if: image">
+							<span data-bind="html: image"></span>
+						</div>
 					</div>
 				</div>
 			</div>
