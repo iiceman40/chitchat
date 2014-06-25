@@ -82,9 +82,8 @@ $(document).ready(function(){
 				// clear message and image
 				self.message('');
 				self.image('');
-				// TODO show loading icon when sending (large) images
-				console.log('sending');
 				self.sending(true);
+				console.log('client sending message - sending: ', self.sending());
 			}
 		}
 
@@ -118,8 +117,8 @@ $(document).ready(function(){
 			self.setMembers(data.clients);
 			// always scroll down to show the latest message
 			$('body').scrollTop($('body')[0].scrollHeight);
-			console.log('client message recieved');
 			self.receiving(false);
+			console.log('client message recieved - receiving: ', self.receiving());
 		});
 		// Received ID
 		socket.on('myId', function(data){
@@ -130,13 +129,13 @@ $(document).ready(function(){
 		});
 		// Server received message
 		socket.on('received', function(data){
-			console.log("server message recieved");
 			self.sending(false);
+			console.log("server message recieved - sending: ", self.sending());
 		});
 		// Server is sending a message
 		socket.on('sending', function(data){
-			console.log("incoming message from server");
 			self.receiving(true);
+			console.log("incoming message from server - receiving: ", self.receiving());
 		});
 
 		// File Handler
