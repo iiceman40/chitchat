@@ -5,6 +5,11 @@ var express = require('express'),
 	io = require('socket.io').listen(server),
 	conf = require('./config.json');
 
+io.configure(function () {
+	io.set("transports", ["xhr-polling"]);
+	io.set("polling duration", 10);
+});
+
 // Webserver
 // auf den Port x schalten
 var port = process.env.PORT || conf.port;
