@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a10c0db6-c491-43f3-9898-a8e025627051" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/Controller/client.js" afterPath="$PROJECT_DIR$/public/js/Controller/client.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a10c0db6-c491-43f3-9898-a8e025627051" name="Default" comment="" />
     <ignored path="nodechat.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -59,19 +55,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="server.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="server.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="18" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1853">
+            <state line="48" column="35" selection-start="1620" selection-end="1620" vertical-scroll-proportion="0.61130136" vertical-offset="459" max-vertical-offset="1853">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="client.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/Controller/client.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="33" selection-start="365" selection-end="365" vertical-scroll-proportion="0.33208954" vertical-offset="77" max-vertical-offset="3145">
+            <state line="137" column="16" selection-start="3775" selection-end="3775" vertical-scroll-proportion="-9.729167" vertical-offset="1862" max-vertical-offset="3145">
               <folding />
             </state>
           </provider>
@@ -527,13 +523,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="18" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1853">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="71" column="46" selection-start="2527" selection-end="2536" vertical-scroll-proportion="-12.423077" vertical-offset="884" max-vertical-offset="2193">
@@ -548,7 +537,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/Controller/client.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="33" selection-start="365" selection-end="365" vertical-scroll-proportion="0.33208954" vertical-offset="77" max-vertical-offset="3145">
+        <state line="137" column="16" selection-start="3775" selection-end="3775" vertical-scroll-proportion="-9.729167" vertical-offset="1862" max-vertical-offset="3145">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="35" selection-start="1620" selection-end="1620" vertical-scroll-proportion="0.61130136" vertical-offset="459" max-vertical-offset="1853">
           <folding />
         </state>
       </provider>
