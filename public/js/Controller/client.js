@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	var pageTitle = 'ChitChat';
+
 	// WebSocket
 	var socket = io.connect();
 
@@ -8,6 +10,9 @@ $(document).ready(function(){
 		/*
 		 * OBSERVABLES
 		 */
+		this.focused = ko.observable(true);
+		this.pageTitle = ko.observable('The ChitChat');
+
 		this.messages = ko.observableArray();
 		this.members = ko.observableArray();
 		this.name = ko.observable();
@@ -115,8 +120,12 @@ $(document).ready(function(){
 		socket.on('chat', function (data) {
 			self.addMessage(data);
 			self.setMembers(data.clients);
+
+			if(!self.focused())
+				self.pageTitle('Neue Nachricht!');
+
 			// always scroll down to show the latest message
-			$('body').scrollTop($('body')[0].scrollHeight);
+			window.scrollTo(0, document.body.scrollHeight);
 			self.receiving(false);
 			console.log('client message recieved - receiving: ', self.receiving(), new Date());
 		});
@@ -161,8 +170,16 @@ $(document).ready(function(){
 			}
 		});
 
+		// focus
+		window.onfocus = function() {
+			self.focused(true);
+			self.pageTitle(pageTitle);
+		};
+		window.onblur = function() {
+			self.focused(false);
+		};
 	};
-	ko.applyBindings(new ChatViewModel());
+	ko.applyBindings(new ChatViewModel(), document.getElementById("htmlTop"));
 
 	setTimeout(function(){
 		$('#members-panel').find('.panel-body').popover('show').on('shown.bs.popover', function () {

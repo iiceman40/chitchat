@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html id="htmlTop">
 <head>
-	<title>ChitChat</title>
+	<title data-bind="text: pageTitle">ChitChat</title>
 	<meta charset="utf-8">
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/style.css"/>
@@ -13,6 +14,8 @@
 	<script src="js/Model/Message.js"></script>
 	<script src="js/Model/Member.js"></script>
 	<script src="js/Controller/client.js"></script>
+	<script src="js/Plugins/jquery.hoverintent.js"></script>
+	<script src="js/jquery.custom.js"></script>
 </head>
 <body>
 <header>
@@ -20,12 +23,6 @@
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
 				<a class="navbar-brand" href="#">
 					<i class="fa fa-user" style="font-size: 120%"></i>
 					<i class="fa fa-comment" style="vertical-align: top; font-size: 90%; display: inline-block; margin: -2% 0 0 -2%;"></i>
@@ -44,22 +41,35 @@
 
 <div class="container">
 
+	<div id="bug-panel" class="panel panel-default">
+		<div class="panel-body">
+			<a href="https://github.com/iiceman40/chitchat/issues" class="pull-right" target="_blank">
+				<i class="fa fa-bug pull-right"></i>
+				<span class="pull-left">
+					<strong>Einen Bug gefunden?</strong><br />
+					Lass es uns bitte wissen und<br />
+					erstelle einen Bugreport!
+				</span>
+			</a>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-sm-10">
 			<div id="chat" class="list-unstyled" data-bind="foreach: messages">
 				<div class="row">
 					<div class="col-sm-3">
-						<em data-bind="text: timeFormated" class="half-transparent"></em>
-						<em data-bind="text: name" class="half-transparent"></em>
-						<em data-bind="visible: name" class="half-transparent">sagt:</em>
-						<em data-bind="if: type() == 'private'" class="half-transparent">
+						<span data-bind="text: timeFormated" class="half-transparent"></span>
+						<span data-bind="text: name" class="half-transparent"></span>
+						<span data-bind="visible: name" class="half-transparent">sagt:</span>
+						<span data-bind="if: type() == 'private'" class="half-transparent">
 							[PM an <span data-bind="text: targets"></span>]
-						</em>
+						</span>
 					</div>
 					<div class="col-sm-9">
-						<em data-bind="if: !name()" class="half-transparent">
+						<span data-bind="if: !name()" class="half-transparent">
 							<span data-bind="html: text"></span>
-						</em>
+						</span>
 						<span data-bind="if: name">
 							<span data-bind="html: text"></span>
 						</span>
@@ -72,7 +82,7 @@
 			<div data-bind="visible: receiving" style="text-align: center" class="half-transparent"><i class="fa fa-spinner fa-spin half-transparent"></i></div>
 		</div>
 		<div class="col-sm-2">
-			<div id="members-panel" class="panel panel-default affix pull-right" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+			<div id="members-panel" class="panel panel-default" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
 				<div class="panel-heading">Teilnehmer </div>
 				<div class="panel-body" data-container="#members-panel" data-trigger="manual" data-toggle="popover" data-placement="bottom" data-content="Hier findest du eine Liste aller Chat-Teilnehmer. Klicke einen oder mehere Personen an, um ihnen private Nachrichten zu schicken." data-original-title="Hinweis">
 					<div id="members" class="btn-group-vertical btn-block" data-bind="foreach: members">

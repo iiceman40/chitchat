@@ -1,3 +1,4 @@
+* {font-family: 'Roboto Condensed', sans-serif;}
 body { padding: 70px 0 50px;}
 footer .navbar .container {margin-top:7px;}
 
@@ -9,6 +10,10 @@ footer .navbar .container {margin-top:7px;}
 .navbar-default .navbar-nav>li>a,
 .navbar-default .navbar-nav>li>span {color:white;}
 
+#members-panel {position: fixed; right: 30px; min-width: 200px;}
 #members .btn {text-align: left;}
+
+#bug-panel {position: fixed; width: 280px; left: -200px;}
+#bug-panel i {font-size: 400%;}
 
 .image-attachment {max-height: 300px; vertical-align: top;}

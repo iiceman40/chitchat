@@ -1,30 +1,30 @@
-// Module
+// import modules
 var express = require('express'),
 	app = express(),
 	server = require('http').createServer(app),
 	io = require('socket.io').listen(server),
 	conf = require('./config.json');
 
-// Webserver
-// auf den Port x schalten
+// web server
+// config port to use
 var port = process.env.PORT || conf.port;
 server.listen(port);
 
 app.configure(function(){
-	// statische Dateien ausliefern
+	// deploy all static assets
 	app.use(express.static(__dirname + '/public'));
 });
 
-// wenn der Pfad / aufgerufen wird
+// if path / is called
 app.get('/', function (req, res) {
-	// so wird die Datei index.html ausgegeben
+	// deploy index.html
 	res.sendfile(__dirname + '/public/index.html');
 });
 
 // Websocket
 var clients = [];
 io.sockets.on('connection', function (client) {
-	// erstelle anonymen Namen der noch nicht vergeben ist
+	// create a unique name for anonymous
 	var anoName = 'Anonym', anonym = anoName, anonymInUse = true, anoCount = 0;
 	while (anonymInUse){
 		anonymInUse = false;
@@ -33,8 +33,8 @@ io.sockets.on('connection', function (client) {
 	}
 
 	// Connections
-	// der Client ist verbunden
-	clients.push({id: client.id, name: anonym}); // hinzufügen zur Liste der Teilnehme
+	// clients is now connected
+	clients.push({id: client.id, name: anonym}); // add to suers list for this chat
 	console.log('connected', client.id);
 
 	io.to('chatroom').emit('chat', { time: new Date(), text: 'Ein Teilnehmer ist dem Chat beigetreten!', clients: clients });
@@ -42,20 +42,25 @@ io.sockets.on('connection', function (client) {
 	client.emit('chat', { time: new Date(), text: 'Du bist dem Chat beigetreten!', clients: clients });
 	client.emit('myId', {id: client.id});
 
-	// wenn ein Benutzer einen Text senden
+	/*
+	 * HANDLE EVENTS FOR THIS SOCKET
+	 */
+	// user sends message
 	client.on('chat', function (data) {
+		data = cleanData(data);
 		client.emit('received');
 		// so wird dieser Text an alle anderen Benutzer gesendet
 		io.sockets.emit('sending');
 		io.sockets.emit('chat', { time: new Date(), name: data.name || anonym, text: data.text, image: data.image, clients: clients });
 	});
 
-	// wenn ein Benutzer einen privaten Text an ausgewählte Nutzer sendet
+	// user sends private message to selected users
 	client.on('chatPrivate', function (data) {
-		// bereite ein array der angesprochenen Benutzer vor
+		data = cleanData(data);
+		// prepare array of recipients
 		targetNames = [];
 		for(var i=0; i<data.targets.length; i++) targetNames.push(data.targets[i].name);
-		// bereite die Nachricht vor
+		// prepare message
 		message = {
 			time: new Date(),
 			name: data.name || anonym,
@@ -65,16 +70,16 @@ io.sockets.on('connection', function (client) {
 			targets: targetNames.join(),
 			clients: clients
 		};
-		// übermittele die Nachricht an alle ausgewählten Nutzer
+		// send message to all selected users
 		for(i=0; i<data.targets.length; i++){
 			target = data.targets[i];
 			io.to(target.id).emit('chat', message);
 		}
-		// übermittle die Nachricht auch an den Nutzer selbst
+		// send message to this user
 		client.emit('chat', message);
 	});
 
-	// wenn Benutzer den Chat verlassen
+	// user left chat
 	client.on('disconnect', function() {
 		console.log('disconnected', client.id);
 		thisClient = findWithAttr(clients,'id',client.id);
@@ -83,8 +88,9 @@ io.sockets.on('connection', function (client) {
 		io.sockets.emit('chat', { time: new Date(), text: oldName  + ' hat den Chat verlassen', clients: clients });
 	});
 
-	// wenn Benutzer ihren Namen ändern
+	// user changed name
 	client.on('nameChange', function(data) {
+		data = cleanData(data);
 		tempClient = findWithAttr(clients,'id',client.id);
 		oldName = clients[tempClient].name;
 		clients[tempClient].name = data.name;
@@ -100,5 +106,13 @@ function findWithAttr(array, attr, value) {
 	}
 }
 
-// Portnummer in die Konsole schreiben
+function cleanData(data){
+	for (var prop in data){
+		if( prop != 'image' && data.hasOwnProperty(prop) ){
+			data[prop] = data[prop].replace(/<(?:.|\n)*?>/gm, '');
+		}
+	}
+	return data;
+}
+
 console.log('Der Server läuft nun auf dem Port ' + port);
