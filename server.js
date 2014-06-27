@@ -96,6 +96,15 @@ io.sockets.on('connection', function (client) {
 		clients[tempClient].name = data.name;
 		io.sockets.emit('chat', { time: new Date(), text: 'Ein Teilnehmer hat seinen Namen geändert von "'+ oldName +'" zu "'+ data.name +'"!', clients: clients });
 	});
+
+	// user started typing
+	client.on('startedTyping', function() {
+		io.sockets.emit('userStartedTyping', { id: client.id });
+	});
+	// user stopped typing
+	client.on('stoppedTyping', function() {
+		io.sockets.emit('userStoppedTyping', { id: client.id });
+	});
 });
 
 function findWithAttr(array, attr, value) {

@@ -1,5 +1,9 @@
 $(document).ready(function(){
 	var pageTitle = 'ChitChat';
+	var favicon = new Favico({
+		animation: 'none'
+	});
+	var typing;
 
 	// WebSocket
 	var socket = io.connect();
@@ -12,6 +16,7 @@ $(document).ready(function(){
 		 */
 		this.focused = ko.observable(true);
 		this.pageTitle = ko.observable('The ChitChat');
+		this.count = ko.observable(0);
 
 		this.messages = ko.observableArray();
 		this.members = ko.observableArray();
@@ -20,12 +25,24 @@ $(document).ready(function(){
 		this.sending = ko.observable(false);
 		this.receiving = ko.observable(false);
 		this.image = ko.observable('');
+		this.isTyping = ko.observable(false);
 
 		/*
 		 * SUBSCRIPTIONS
 		 */
 		this.name.subscribe(function(){
 			socket.emit('nameChange', { name: self.name() });
+		});
+		this.message.subscribe(function(){
+			// TODO add check if message is private!
+			if(!self.isTyping())
+				socket.emit('startedTyping');
+			self.isTyping(true);
+			window.clearTimeout(typing);
+			typing = window.setTimeout(function(){
+				self.isTyping(false);
+				socket.emit('stoppedTyping');
+			},2000);
 		});
 
 		/*
@@ -88,7 +105,9 @@ $(document).ready(function(){
 				self.message('');
 				self.image('');
 				self.sending(true);
-				console.log('client sending message - sending: ', self.sending(), new Date());
+				//console.log('client sending message - sending: ', self.sending(), new Date());
+				self.isTyping(false);
+				socket.emit('stoppedTyping');
 			}
 		}
 
@@ -121,13 +140,16 @@ $(document).ready(function(){
 			self.addMessage(data);
 			self.setMembers(data.clients);
 
-			if(!self.focused())
+			if(!self.focused()){
 				self.pageTitle('Neue Nachricht!');
+				self.count(self.count()+1);
+				favicon.badge(self.count());
+			}
 
 			// always scroll down to show the latest message
 			window.scrollTo(0, document.body.scrollHeight);
 			self.receiving(false);
-			console.log('client message recieved - receiving: ', self.receiving(), new Date());
+			//console.log('client message recieved - receiving: ', self.receiving(), new Date());
 		});
 		// Received ID
 		socket.on('myId', function(data){
@@ -139,12 +161,24 @@ $(document).ready(function(){
 		// Server received message
 		socket.on('received', function(data){
 			self.sending(false);
-			console.log("server message recieved - sending: ", self.sending(), new Date());
+			//console.log("server message recieved - sending: ", self.sending(), new Date());
 		});
 		// Server is sending a message
 		socket.on('sending', function(data){
 			self.receiving(true);
-			console.log("incoming message from server - receiving: ", self.receiving(), new Date());
+			//console.log("incoming message from server - receiving: ", self.receiving(), new Date());
+		});
+
+		socket.on('userStartedTyping', function(data){
+			user = getUserById(data.id, self.members());
+			//console.log(user.name() + ' started typing');
+			user.isTyping(true);
+		});
+
+		socket.on('userStoppedTyping', function(data){
+			user = getUserById(data.id, self.members());
+			//console.log(user.name() + ' stopped typing');
+			user.isTyping(false);
 		});
 
 		// File Handler
@@ -174,6 +208,8 @@ $(document).ready(function(){
 		window.onfocus = function() {
 			self.focused(true);
 			self.pageTitle(pageTitle);
+			self.count(0);
+			favicon.reset();
 		};
 		window.onblur = function() {
 			self.focused(false);
@@ -189,8 +225,14 @@ $(document).ready(function(){
 				popup.popover('hide');
 			});
 		});
-
 	},500)
+
+	function getUserById(id, users){
+		filtered = ko.utils.arrayFilter(users, function(user) {
+			return user.id() == id;
+		});
+		return filtered[0];
+	}
 
 });
 

@@ -13,7 +13,7 @@ footer .navbar .container {margin-top:7px;}
 #members-panel {position: fixed; right: 30px; min-width: 200px;}
 #members .btn {text-align: left;}
 
-#bug-panel {position: fixed; width: 280px; left: -200px;}
-#bug-panel i {font-size: 400%;}
+#bug-panel {position: fixed; width: 280px; left: -220px; z-index: 1000}
+#bug-panel i {font-size: 250%; padding-top: 10px;}
 
 .image-attachment {max-height: 300px; vertical-align: top;}

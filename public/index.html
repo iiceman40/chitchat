@@ -3,6 +3,7 @@
 <head>
 	<title data-bind="text: pageTitle">ChitChat</title>
 	<meta charset="utf-8">
+	<link rel="shortcut icon" href="text.ico" type="image/x-icon" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
@@ -15,26 +16,29 @@
 	<script src="js/Model/Member.js"></script>
 	<script src="js/Controller/client.js"></script>
 	<script src="js/Plugins/jquery.hoverintent.js"></script>
+	<script src="js/Libs/favico.min.js"></script>
 	<script src="js/jquery.custom.js"></script>
 </head>
 <body>
 <header>
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
-					<i class="fa fa-user" style="font-size: 120%"></i>
-					<i class="fa fa-comment" style="vertical-align: top; font-size: 90%; display: inline-block; margin: -2% 0 0 -2%;"></i>
-					ChitChat - A sample chat application.
-				</a>
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header col-sm-10 col-xs-10">
+					<a class="navbar-brand" href="#">
+						<i class="fa fa-user" style="font-size: 120%"></i>
+						<i class="fa fa-comment" style="vertical-align: top; font-size: 90%; display: inline-block; margin: -2% 2% 0 -2%;"></i>
+						ChitChat - A sample chat application.
+					</a>
+				</div>
+				<ul class="nav navbar-nav navbar-right col-sm-2 col-xs-2">
+					<li class="pull-right">
+						<span class="navbar-text" data-bind="visible: name, text: name"></span>
+						<a href="#" data-bind="visible: !name()">Login</a>
+					</li>
+				</ul>
 			</div>
-			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<span class="navbar-text" data-bind="visible: name, text: name"></span>
-					<a href="#" data-bind="visible: !name()">Login</a>
-				</li>
-			</ul>
 		</div>
 	</nav>
 </header>
@@ -91,6 +95,7 @@
 							<i class="fa fa-comment" data-bind="visible: selected"></i>
 							<i class="fa fa-comment-o" data-bind="visible: !selected() && !isMe()"></i>
 							<span data-bind="text: name"></span>
+							<i class="fa fa-keyboard-o pull-right" data-bind="visible: isTyping" title="schreibt gerade"></i>
 						</button>
 					</div>
 				</div>
@@ -105,19 +110,19 @@
 		<div class="container">
 			<div class="row">
 				<form>
-					<div class="col-sm-2">
+					<div class="col-xs-6 col-sm-2">
 						<input id="name" type="text" class="form-control" placeholder="dein Name" data-bind="value: name" />
 					</div>
-					<div class="col-sm-7">
-						<input id="text" type="text" class="form-control" placeholder="schreibe etwas..." data-bind="value: message" />
+					<div class="col-xs-12 col-sm-7">
+						<input id="text" type="text" class="form-control" placeholder="schreibe etwas..." data-bind="value: message, valueUpdate:'afterkeydown'" />
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-3 col-sm-2">
 						<input type="file" id="files" name="files[]" multiple style="display:none" />
 						<a class="btn btn-primary" data-bind="click: addImage">
 							<span data-bind="text: imageLabel"></span>
 						</a>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-xs-3 col-sm-1">
 						<button class="btn btn-default" data-bind="click: send" >
 							<span class="glyphicon glyphicon-send half-transparent" data-bind="visible: !sending()"></span>
 							<span class="fa fa-spinner fa-spinfa fa-spinner fa-spin half-transparent" data-bind="visible: sending"></span>

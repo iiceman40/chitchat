@@ -5,5 +5,6 @@ var Member = function(data){
 	this.name = ko.observable(data.name);
 	this.selected = ko.observable(data.selected || false);
 	this.isMe = ko.observable(data.isMe || false);
+	this.isTyping = ko.observable(false);
 
 }
