@@ -21,6 +21,7 @@ $(document).ready(function(){
 		this.messages = ko.observableArray();
 		this.members = ko.observableArray();
 		this.name = ko.observable();
+		this.previousName = ko.observable();
 		this.message = ko.observable();
 		this.sending = ko.observable(false);
 		this.receiving = ko.observable(false);
@@ -30,8 +31,11 @@ $(document).ready(function(){
 		/*
 		 * SUBSCRIPTIONS
 		 */
-		this.name.subscribe(function(){
-			socket.emit('nameChange', { name: self.name() });
+		this.name.subscribe(function(oldName){
+			this.previousName(oldName);
+		}, this, "beforeChange");
+		this.name.subscribe(function(newName){
+			(!newName) ? self.name(self.previousName()) : socket.emit('nameChange', { name: newName });;
 		});
 		this.message.subscribe(function(){
 			// TODO add check if message is private!
@@ -135,10 +139,20 @@ $(document).ready(function(){
 		/*
 		 * SOCKET HANDLER
 		 */
+		// Received Message History
+		socket.on('messageHistory', function (data) {
+			self.messages([]);
+			if(data.messageHistory){
+				$.each(data.messageHistory, function(key, message){
+					self.addMessage(message);
+				});
+			}
+		});
 		// Received Message
 		socket.on('chat', function (data) {
-			self.addMessage(data);
-			self.setMembers(data.clients);
+			self.addMessage(data.message);
+			if(data.clients)
+				self.setMembers(data.clients);
 
 			if(!self.focused()){
 				self.pageTitle('Neue Nachricht!');
@@ -153,6 +167,7 @@ $(document).ready(function(){
 		});
 		// Received ID
 		socket.on('myId', function(data){
+			console.log('myId', data);
 			for(i=0; i < self.members().length; i++){
 				member = self.members()[i];
 				if(member.id() == data.id) member.isMe(true);

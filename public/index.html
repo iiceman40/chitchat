@@ -61,7 +61,7 @@
 	<div class="row">
 		<div class="col-sm-10">
 			<div id="chat" class="list-unstyled" data-bind="foreach: messages">
-				<div class="row">
+				<div class="row" data-bind="css: {red: type() == 0}">
 					<div class="col-sm-3">
 						<span data-bind="text: timeFormated" class="half-transparent"></span>
 						<span data-bind="text: name" class="half-transparent"></span>
