@@ -1,8 +1,6 @@
 var Message = function(data){
 	var selfMessage = this;
 
-	console.log(data);
-
 	this.user = ko.observable(data.user);
 	this.text = ko.observable(replaceEmoticons(data.text));
 	this.time = ko.observable(data.time);
@@ -18,7 +16,9 @@ var Message = function(data){
 
 	this.timeFormated = ko.computed(function(){
 		time = new Date(selfMessage.time());
-		return '[' + (time.getHours() < 10 ? '0' + time.getHours() : time.getHours())+ ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()) + ']';
+		return (selfMessage.type()==3) ?
+			'[' + (time.getHours() < 10 ? '0' + time.getHours() : time.getHours())+ ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()) + " - " + time.getDate() + "." + time.getMonth() + "." + ']'
+		    : '[' + (time.getHours() < 10 ? '0' + time.getHours() : time.getHours())+ ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()) + ']';
 	}, this);
 
 	this.targetsString = ko.computed(function(){

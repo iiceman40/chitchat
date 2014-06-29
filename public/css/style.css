@@ -20,6 +20,10 @@ footer .navbar .container {margin-top:7px;}
 
 .image-attachment {max-height: 300px; vertical-align: top;}
 
+.tab-content {padding: 0 10px 10px 10px; margin-top: 64px;}
+.nav-tabs-wrapper {position: fixed; width: 70%; background: white; z-index: 800; padding: 30px 0 21px; margin-top: -30px;}
+#noPrivateMessages {display: none;}
+
 .message .from a {color: #333;}
 .message .from a:hover {opacity: 1;}
 .message.purple .from a {color: #990099}
@@ -29,3 +33,5 @@ footer .navbar .container {margin-top:7px;}
 .red {color: #ee0000;}
 .green {color: #008800}
 .blue {color: #428bca;}
+
+.target-count.badge {color: white; font-size: 60%; display: inline-block; margin-left: -10px; padding: 2px 4px;}

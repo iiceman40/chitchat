@@ -15,7 +15,7 @@ $(document).ready(function(){
 		 * OBSERVABLES
 		 */
 		this.focused = ko.observable(true);
-		this.pageTitle = ko.observable('The ChitChat');
+		this.pageTitle = ko.observable(pageTitle);
 		this.count = ko.observable(0);
 
 		this.messages = ko.observableArray();
@@ -123,7 +123,7 @@ $(document).ready(function(){
 					socket.emit('chatPrivate', { user: ko.toJS(self.me()), name: self.name(), text: self.message(), image: self.image().tag, targets: ko.toJS(self.selectedMembers()) });
 				} else {
 					// socket send
-					console.log(ko.toJS(self.me()));
+					//console.log(ko.toJS(self.me()));
 					message = {
 						user: ko.toJS(self.me()),
 						name: self.name(),
@@ -146,11 +146,24 @@ $(document).ready(function(){
 		/*
 		 * COMPUTED OBSERVABLES
 		 */
+		this.privateMessages = ko.computed(function(){
+			return ko.utils.arrayFilter(self.messages(), function(message) {
+				return message.type() == 2;
+			});
+		}, this);
+
+		this.publicMessages = ko.computed(function(){
+			return ko.utils.arrayFilter(self.messages(), function(message) {
+				return message.type() == 1;
+			});
+		}, this);
+
 		this.selectedMembers = ko.computed(function(){
 			return ko.utils.arrayFilter(self.members(), function(member) {
 				return member.selected();
 			});
 		}, this);
+
 		this.imageLabel = ko.computed(function(){
 			if(self.image() && self.image().name){
 				name = self.image().name;
@@ -163,6 +176,7 @@ $(document).ready(function(){
 				} else return self.image().name;
 			} else return 'Bild hinzufügen';
 		}, this);
+
 		this.me = ko.computed(function(){
 			me = {};
 			$.each(self.members(), function(key, member){
@@ -184,6 +198,8 @@ $(document).ready(function(){
 					self.addMessage(message);
 				});
 			}
+			// always scroll down to show the latest message
+			window.scrollTo(0, document.body.scrollHeight);
 		});
 		// Received Message
 		socket.on('chat', function (data) {
@@ -200,11 +216,11 @@ $(document).ready(function(){
 			// always scroll down to show the latest message
 			window.scrollTo(0, document.body.scrollHeight);
 			self.receiving(false);
-			console.log('client message recieved - receiving: ', self.receiving(), new Date());
+			//console.log('client message recieved - receiving: ', self.receiving(), new Date());
 		});
 		// Received ID
 		socket.on('myId', function(data){
-			console.log('myId', data);
+			//console.log('myId', data);
 			for(i=0; i < self.members().length; i++){
 				member = self.members()[i];
 				if(member.id() == data.id) member.isMe(true);
