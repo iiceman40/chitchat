@@ -72,7 +72,7 @@
 				<div class="tab-pane active" id="chat" data-bind="template: {name: 'message-template', foreach: messages}"></div>
 				<div class="tab-pane" id="public" data-bind="template: {name: 'message-template', foreach: publicMessages}"></div>
 				<div class="tab-pane" id="private" data-bind="template: {name: 'message-template', foreach: privateMessages}"></div>
-				<div id="noPrivateMessages" data-bind="visible: privateMessages().length == 0">Keine privaten Nachrichten</div>
+				<div id="noPrivateMessages"><span data-bind="visible: privateMessages().length == 0">Keine privaten Nachrichten</span></div>
 			</div>
 			<div data-bind="visible: receiving" style="text-align: center" class="half-transparent"><i class="fa fa-spinner fa-spin half-transparent"></i></div>
 		</div>
