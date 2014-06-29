@@ -38,7 +38,7 @@ $(document).ready(function(){
 			(!newName) ? self.name(self.previousName()) : socket.emit('nameChange', { name: newName });;
 		});
 		this.message.subscribe(function(){
-			// TODO add check if message is private!
+			// TODO add check if message is private when showing the typing icon!
 			if(!self.isTyping())
 				socket.emit('startedTyping');
 			self.isTyping(true);
@@ -88,6 +88,29 @@ $(document).ready(function(){
 					member.selected(true);
 			}
 		}
+
+		this.selectTargets = function(data){
+			$.each(self.members(), function(key, member){
+				member.selected(false);
+			});
+			$.each(data.targets(), function(key, target){
+				user = getUserById(target.id, self.members());
+				if(!user.isMe())
+					user.selected(true);
+			});
+			user = getUserById(data.user().id, self.members());
+			if(!user.isMe())
+				user.selected(true);
+		}
+		this.selectSender = function(data){
+			$.each(self.members(), function(key, member){
+				member.selected(false);
+			});
+			user = getUserById(data.user().id, self.members());
+			if(!user.isMe())
+				user.selected(true);
+		}
+
 		// Image
 		this.addImage = function(){
 			$('#files').trigger('click');
@@ -97,10 +120,15 @@ $(document).ready(function(){
 			if(self.message() || self.image()){
 				if(self.selectedMembers().length > 0){
 					// private message
-					socket.emit('chatPrivate', { name: self.name(), text: self.message(), image: self.image().tag, targets: ko.toJS(self.selectedMembers) });
+					socket.emit('chatPrivate', { user: ko.toJS(self.me()), name: self.name(), text: self.message(), image: self.image().tag, targets: ko.toJS(self.selectedMembers()) });
 				} else {
 					// socket send
-					message = { name: self.name(), text: self.message() };
+					console.log(ko.toJS(self.me()));
+					message = {
+						user: ko.toJS(self.me()),
+						name: self.name(),
+						text: self.message()
+					};
 					if(self.image() && self.image().tag)
 						message.image = self.image().tag;
 					socket.emit('chat', message);
@@ -135,6 +163,14 @@ $(document).ready(function(){
 				} else return self.image().name;
 			} else return 'Bild hinzufügen';
 		}, this);
+		this.me = ko.computed(function(){
+			me = {};
+			$.each(self.members(), function(key, member){
+				if(member.isMe())
+					me = member;
+			})
+			return me;
+		}, this);
 
 		/*
 		 * SOCKET HANDLER
@@ -144,6 +180,7 @@ $(document).ready(function(){
 			self.messages([]);
 			if(data.messageHistory){
 				$.each(data.messageHistory, function(key, message){
+					message.type = 3;
 					self.addMessage(message);
 				});
 			}
@@ -163,7 +200,7 @@ $(document).ready(function(){
 			// always scroll down to show the latest message
 			window.scrollTo(0, document.body.scrollHeight);
 			self.receiving(false);
-			//console.log('client message recieved - receiving: ', self.receiving(), new Date());
+			console.log('client message recieved - receiving: ', self.receiving(), new Date());
 		});
 		// Received ID
 		socket.on('myId', function(data){

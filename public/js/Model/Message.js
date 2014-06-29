@@ -3,19 +3,37 @@ var Message = function(data){
 
 	console.log(data);
 
-	this.name = ko.observable(data.user.name);
+	this.user = ko.observable(data.user);
 	this.text = ko.observable(replaceEmoticons(data.text));
 	this.time = ko.observable(data.time);
 	this.type = ko.observable(data.type);
-	this.targets = ko.observable(data.targets);
+	this.targets = ko.observableArray(data.targets);
 
 	this.image = ko.observable(data.image);
+
+	// computed
+	this.name = ko.computed(function(){
+		return selfMessage.user().name;
+	}, this);
 
 	this.timeFormated = ko.computed(function(){
 		time = new Date(selfMessage.time());
 		return '[' + (time.getHours() < 10 ? '0' + time.getHours() : time.getHours())+ ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()) + ']';
 	}, this);
 
+	this.targetsString = ko.computed(function(){
+		targetNames = [];
+		if(selfMessage.targets())
+			$.each(selfMessage.targets(), function(key, value){
+				targetNames.push(value.name);
+			});
+		return targetNames.join(', ');
+	}, this);
+
+
+	/*
+	 * HELPER FUNCTIONS
+	 */
 	function replaceEmoticons(text) {
 		var emoticons = {
 				':-)' : 'smile1.png',

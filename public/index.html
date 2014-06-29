@@ -29,7 +29,7 @@
 					<a class="navbar-brand" href="#">
 						<i class="fa fa-user" style="font-size: 120%"></i>
 						<i class="fa fa-comment" style="vertical-align: top; font-size: 90%; display: inline-block; margin: -2% 2% 0 -2%;"></i>
-						ChitChat - A sample chat application.
+						ChitChat<span class="hidden-xs"> - A sample chat application.</span>
 					</a>
 				</div>
 				<ul class="nav navbar-nav navbar-right col-sm-2 col-xs-2">
@@ -45,11 +45,11 @@
 
 <div class="container">
 
-	<div id="bug-panel" class="panel panel-default">
+	<div id="bug-panel" class="panel panel-default hidden-xs">
 		<div class="panel-body">
-			<a href="https://github.com/iiceman40/chitchat/issues" class="pull-right" target="_blank">
-				<i class="fa fa-bug pull-right"></i>
-				<span class="pull-left">
+			<a href="https://github.com/iiceman40/chitchat/issues" class="pull-left" target="_blank">
+				<i class="fa fa-bug pull-left"></i>
+				<span class="pull-right">
 					<strong>Einen Bug gefunden?</strong><br />
 					Lass es uns bitte wissen und<br />
 					erstelle einen Bugreport!
@@ -61,16 +61,15 @@
 	<div class="row">
 		<div class="col-sm-10">
 			<div id="chat" class="list-unstyled" data-bind="foreach: messages">
-				<div class="row" data-bind="css: {red: type() == 0}">
-					<div class="col-sm-3">
+				<div class="row message" data-bind="css: {blue: type()==0, purple: type()==2}">
+					<div class="col-sm-3 from">
 						<span data-bind="text: timeFormated" class="half-transparent"></span>
 						<span data-bind="text: name" class="half-transparent"></span>
-						<span data-bind="visible: name" class="half-transparent">sagt:</span>
-						<span data-bind="if: type() == 'private'" class="half-transparent">
-							[PM an <span data-bind="text: targets"></span>]
-						</span>
+						<a href="" title="Absender antworten" class="half-transparent makeTooltip" data-bind="visible: type()!=0 && type()!=3, click: $root.selectSender" data-toggle="tooltip" data-placement="top"><i class="fa fa-reply"></i></a>
+						<a href="" title="Allen antworten" class="half-transparent makeTooltip" data-bind="visible: $data.targets().length > 1, click: $root.selectTargets" data-toggle="tooltip" data-placement="top"><i class="fa fa-reply-all"></i></a>
+						<span class="half-transparent makeTooltip" data-bind="visible: type()==2, attr: {title: 'An: '+targetsString()}" data-toggle="tooltip" data-placement="top"><i class="fa fa-users"></i></span>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-9" data-bind="css: {'half-transparent': type()==3}">
 						<span data-bind="if: !name()" class="half-transparent">
 							<span data-bind="html: text"></span>
 						</span>

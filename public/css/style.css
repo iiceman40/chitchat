@@ -1,8 +1,10 @@
-* {font-family: 'Roboto Condensed', sans-serif;}
+* {font-family: 'Roboto Condensed', sans-serif; font-size: 1.02em;}
 body { padding: 70px 0 50px;}
 footer .navbar .container {margin-top:7px;}
 
 .half-transparent {opacity: 0.5;}
+.from .half-transparent .tooltip {opacity: 1 !important;}
+
 .navbar-default {background: #428bca;}
 .navbar-default .navbar-brand,
 .navbar-default .navbar-brand:hover {color: white; font-size: 180%; text-shadow: -1px -1px 0px #aaa;}
@@ -13,9 +15,17 @@ footer .navbar .container {margin-top:7px;}
 #members-panel {position: fixed; right: 30px; min-width: 200px;}
 #members .btn {text-align: left;}
 
-#bug-panel {position: fixed; width: 280px; left: -220px; z-index: 1000}
+#bug-panel {position: fixed; width: 280px; right: -220px; bottom: 40px; z-index: 1000}
 #bug-panel i {font-size: 250%; padding-top: 10px;}
 
 .image-attachment {max-height: 300px; vertical-align: top;}
 
-.red {color: red;}
+.message .from a {color: #333;}
+.message .from a:hover {opacity: 1;}
+.message.purple .from a {color: #990099}
+
+.purple {color: #990099}
+.purple a {color: #990099}
+.red {color: #ee0000;}
+.green {color: #008800}
+.blue {color: #428bca;}

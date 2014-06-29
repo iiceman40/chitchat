@@ -40,6 +40,7 @@ db.once('open', function callback () {
 
 // schemas
 var userSchema = mongoose.Schema({
+	user: {},
 	name: String,
 	email: String,
 	password: String
@@ -101,12 +102,13 @@ io.sockets.on('connection', function (client) {
 	 */
 	// user sends message
 	client.on('chat', function (data) {
+		console.log('chatdata', data);
 		data = cleanData(data);
 		client.emit('received');
 		// save message to DB
 		var message = new Message({
 			time: new Date(),
-			user: {name: data.name || anonym},
+			user: data.user,
 			text: data.text,
 			image: data.image,
 			type: 1 // public
@@ -123,25 +125,23 @@ io.sockets.on('connection', function (client) {
 	// user sends private message to selected users
 	client.on('chatPrivate', function (data) {
 		data = cleanData(data);
-		// prepare array of recipients
-		targetNames = [];
-		for(var i=0; i<data.targets.length; i++) targetNames.push(data.targets[i].name);
-		// prepare message
-		message = new Message({
+		client.emit('received');
+		var message = new Message({
 			time: new Date(),
-			name: data.name || anonym,
+			user: data.user,
 			text: data.text,
 			image: data.image,
-			type: 2, //private
-			targets: targetNames.join()
+			type: 2, // public
+			targets: data.targets
 		});
+		// submit message
+		client.emit('chat', {message: message, clients: clients});
 		// send message to all selected users
 		for(i=0; i<data.targets.length; i++){
 			target = data.targets[i];
-			io.to(target.id).emit('chat', message);
+			io.to(target.id).emit('sending');
+			io.to(target.id).emit('chat', {message: message, clients: clients});
 		}
-		// send message to this user
-		client.emit('chat', {message: message, clients: clients});
 	});
 
 	// user left chat

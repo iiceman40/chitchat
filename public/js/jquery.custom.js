@@ -1,14 +1,20 @@
 $(document).ready(function(){
+	// bug reports
 	$('#bug-panel').hoverIntent(
 		function(){
 			$(this).animate({
-				left: '-50px'
+				right: '-50px'
 			})
 		},
 		function(){
 			$(this).animate({
-				left: '-220px'
+				right: '-220px'
 			})
 		}
 	)
+
+	// targets for PM as tooltip
+	$('body').tooltip({
+		selector: '.makeTooltip'
+	});
 });
