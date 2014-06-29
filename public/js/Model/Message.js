@@ -36,13 +36,16 @@ var Message = function(data){
 	 */
 	function replaceEmoticons(text) {
 		var emoticons = {
-				':-)' : 'smile1.png',
-				':)' : 'smile1.png',
-				':D'  : 'smile2.png',
-				':-|' : 'smile3.png',
-				':-(' : 'smile4.png',
-				':(' : 'smile4.png',
-				':-o' : 'smile5.png'
+				':-)' : 'smiley1.svg',
+				':)' : 'smiley1.svg',
+				':D'  : 'smiley2.svg',
+				':-|' : 'smiley3.svg',
+				':-(' : 'smiley4.svg',
+				':(' : 'smiley4.svg',
+				':-o' : 'smiley5.svg',
+				':P' : 'smiley6.svg',
+				'^^' : 'smiley7.svg',
+				'O_o' : 'smiley8.svg'
 			},
 			patterns = [],
 			metachars = /[[\]{}()*+?.\\|^$\-,&#\s]/g;
@@ -57,7 +60,7 @@ var Message = function(data){
 		// build the regular expression and replace
 		return text.replace(new RegExp(patterns.join('|'),'g'), function (match) {
 			return typeof emoticons[match] != 'undefined' ?
-				'<img src="/images/smileys/'+emoticons[match]+'"/>' :
+				'<img src="/images/smileys/'+emoticons[match]+'" width="20px" />' :
 				match;
 		});
 	}
