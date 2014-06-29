@@ -1,12 +1,11 @@
 {
-  "name": "chitchat",
+  "name": "ChitChat",
   "description": "Ein einfacher Chat mit Node.js",
-  "author": "NodeCode.de",
+  "author": "Sascha Siemer",
   "dependencies": {
     "express": "3.x",
     "socket.io": "*",
-	"mongodb": "*",
-	"monk": "*"
+	"mongodb": "*"
   },
   "scripts": {
     "start": "node server.js"
@@ -16,7 +15,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/iiceman40/nodechat.git"
+    "url": "https://github.com/iiceman40/chitchat.git"
   },
   "keywords": [
     "nodejs",
@@ -24,7 +23,7 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iiceman40/nodechat/issues"
+    "url": "https://github.com/iiceman40/chitchat/issues"
   },
-  "homepage": "https://github.com/iiceman40/nodechat"
+  "homepage": "https://github.com/iiceman40/chitchat"
 }
