@@ -45,7 +45,9 @@ var Message = function(data){
 				':-o' : 'smiley5.svg',
 				':P' : 'smiley6.svg',
 				'^^' : 'smiley7.svg',
-				'O_o' : 'smiley8.svg'
+				'O_o' : 'smiley8.svg',
+				';-)' : 'smiley9.svg',
+				';)' : 'smiley9.svg'
 			},
 			patterns = [],
 			metachars = /[[\]{}()*+?.\\|^$\-,&#\s]/g;
@@ -60,7 +62,7 @@ var Message = function(data){
 		// build the regular expression and replace
 		return text.replace(new RegExp(patterns.join('|'),'g'), function (match) {
 			return typeof emoticons[match] != 'undefined' ?
-				'<img src="/images/smileys/'+emoticons[match]+'" width="20px" />' :
+				'<img src="/images/smileys/'+emoticons[match]+'" width="21px" />' :
 				match;
 		});
 	}
